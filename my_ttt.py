@@ -47,7 +47,6 @@ def win_cond(current_game):
 
 
 def game_board(game_map, player=0, row=0, column=0, just_display=False):
-
     try:
         if game_map[row][column] != 0:
             print("This space is occupied, try another!")
@@ -60,14 +59,15 @@ def game_board(game_map, player=0, row=0, column=0, just_display=False):
             print(count, row)
         return game_map
     except IndexError:
-        print("Hey!\nYou probably forgot in programming a counter starts from zero!\nTry again!")
+        print("Hey!\nYou probably forgot, in programming a counter starts from zero!\nTry again!")
         return False
     except Exception as e:
         print(str(e))
         return False
+    
 
 
-# scallable table
+# scallable table NOT implemented, yet
 def scallable_tables_generator(game_size=3):
     game = []
     for i in range(game_size):
@@ -95,17 +95,16 @@ while play:
             print(f"\nPlayer: {current_player}")
             column_choice = int(input("Choose the column: "))
             row_choice = int(input("Choose the row: "))
-            print('\033[H\033[J')
             played = game_board(game, player=current_player, row=row_choice, column=column_choice)
-
+        print('\033[H\033[J')  # reset a terminal after each turn
         if win_cond(game):
             game_won = True
-            again = input("Hey! Your your programmer skills have groved up!\nWant to improve it even more? (y/n) ")
+            again = input("Hey! Your your programmer skills have groved up!\n\nWant to improve it even more? (y/n) ")
             if again.lower() == "y":
                 print("Nice to see you again!")
             elif again.lower() == "n":
                 print("Bye, than...")
                 play = False
             else:
-                print("Unapropriate input, but... bye!")
+                print("Unapropriate input, but nevertheless... bye!")
                 play = False
