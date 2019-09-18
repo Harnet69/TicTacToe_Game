@@ -28,7 +28,7 @@ def users_input(player_cycle, playing_bord):
         try:
             user_col = int(input("Choose the column: "))
             user_row = int(input("Choose the row: "))
-            if empty_spot_validator(playing_bord, user_row, user_col):
+            if empty_spot_validator(playing_bord, user_col, user_row):
                 convertable = True
         except ValueError:
             print("It's not a number")
@@ -45,9 +45,13 @@ def bord_performer(game_board, users_turn):
 
 
 def empty_spot_validator(game_board, user_col, user_row):
-    if game_board[user_col][user_row] != 0:  # if a spot isn't empty TODO remove it in separate 
+    if user_col > len(game_board) or user_row > len(game_board): # TODO out of range didn't work
+        print("\nThis spot is not exists, give another coordinates!")
+        return False
+    if game_board[user_col][user_row] != 0:  # if a spot isn't empty
         print("\nThis spot is occupied, try another!")
         return False
+
     return True
 
 
@@ -59,7 +63,6 @@ def main():
     win_condition = False
     while not win_condition:
         bord_performer(playing_bord, users_input(player_cycle, playing_bord))
-    
 
 
 if __name__ == "__main__":
