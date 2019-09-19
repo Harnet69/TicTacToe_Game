@@ -12,6 +12,7 @@ def board_generator(game_size=3):
     return game_board
 
 
+# display a battlefild
 def board_display(game_board, initial_bord=False):
     print('\033[H\033[J')
     print("WELCOME TO TicTacToe GAME FOR NOOBS IN PROGRAMMING!\n")
@@ -28,7 +29,7 @@ def users_input(player_cycle, playing_bord):
         try:
             user_col = int(input("Choose the column: "))
             user_row = int(input("Choose the row: "))
-            if empty_spot_validator(playing_bord, user_col, user_row):
+            if user_input_validator(playing_bord, user_col, user_row):
                 convertable = True
         except ValueError:
             print("It's not a number")
@@ -44,8 +45,8 @@ def bord_performer(game_board, users_turn):
     board_display(game_board)
 
 
-def empty_spot_validator(game_board, user_col, user_row):
-    if user_col > len(game_board) or user_row > len(game_board): # TODO out of range didn't work
+def user_input_validator(game_board, user_col, user_row):
+    if user_col > len(game_board)-1 or user_row > len(game_board)-1:  # TODO out of range didn't work
         print("\nThis spot is not exists, give another coordinates!")
         return False
     if game_board[user_col][user_row] != 0:  # if a spot isn't empty
@@ -53,6 +54,55 @@ def empty_spot_validator(game_board, user_col, user_row):
         return False
 
     return True
+
+
+# winnings condition
+def win_cond(game):
+    def all_same(l):
+        if l.count(l[0]) == len(l) and l[0] != 0:
+            return True
+        else:
+            return False
+
+
+    # TODO dead heat
+
+
+    # horizontal winning
+    for row in game:
+        print(row)
+        if all_same(row):
+            print(f"\nPlayer {row[0]} is the winner horizontally!\n")
+            return True
+
+    # vertical winning
+    for col in range(len(game[0])):
+        check = []
+        for row in game:
+            check.append(row[col])
+        if all_same(check):
+            print(f"\nPlayer {check[0]} wins vertically |\n")
+            return True
+
+    # / diagonal winning
+    diags = []
+    for idx, reverse_idx in enumerate(reversed(range(len(game)))):
+        diags.append(game[idx][reverse_idx])
+
+    if all_same(diags):
+        print(f"\nPlayer {diags[0]} wins diagonally /\n")
+        return True
+
+    # \ diagonal winning
+    diags = []
+    for ix in range(len(game)):
+        diags.append(game[ix][ix])
+
+    if all_same(diags):
+        print(f"\nPlayer {diags[0]} wins diagonally \\ \n")
+        return True
+
+    return False
 
 
 def main():
