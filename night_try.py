@@ -70,7 +70,7 @@ def win_cond(game_board):
 
     # horizontal winning
     for row in game_board:
-        print(row)
+        #print(row)
         if all_same(row):
             print(f"\nPlayer {row[0]} is the winner horizontally!\n")
             return True
