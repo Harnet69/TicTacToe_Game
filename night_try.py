@@ -65,12 +65,9 @@ def win_cond(game_board):
             return False
 
 
-    # TODO dead heat
-
-
     # horizontal winning
     for row in game_board:
-        #print(row)
+        #print(row)    # TODO dead heat
         if all_same(row):
             print(f"\nPlayer {row[0]} is the winner horizontally!\n")
             return True
@@ -102,7 +99,15 @@ def win_cond(game_board):
         print(f"\nPlayer {diags[0]} wins diagonally \\ \n")
         return True
 
-    return False
+
+    # dead heat
+    for row in game_board:
+        if 0 in row:
+            return False
+    print(f"\nPlayer1 and Player2 have a DRAW!\n")
+    return True
+
+    #return False
 
 
 def main():
