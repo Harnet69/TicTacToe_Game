@@ -57,7 +57,7 @@ def user_input_validator(game_board, user_col, user_row):
 
 
 # winnings condition
-def win_cond(game):
+def win_cond(game_board):
     def all_same(l):
         if l.count(l[0]) == len(l) and l[0] != 0:
             return True
@@ -69,16 +69,16 @@ def win_cond(game):
 
 
     # horizontal winning
-    for row in game:
+    for row in game_board:
         print(row)
         if all_same(row):
             print(f"\nPlayer {row[0]} is the winner horizontally!\n")
             return True
 
     # vertical winning
-    for col in range(len(game[0])):
+    for col in range(len(game_board[0])):
         check = []
-        for row in game:
+        for row in game_board:
             check.append(row[col])
         if all_same(check):
             print(f"\nPlayer {check[0]} wins vertically |\n")
@@ -86,8 +86,8 @@ def win_cond(game):
 
     # / diagonal winning
     diags = []
-    for idx, reverse_idx in enumerate(reversed(range(len(game)))):
-        diags.append(game[idx][reverse_idx])
+    for idx, reverse_idx in enumerate(reversed(range(len(game_board)))):
+        diags.append(game_board[idx][reverse_idx])
 
     if all_same(diags):
         print(f"\nPlayer {diags[0]} wins diagonally /\n")
@@ -95,8 +95,8 @@ def win_cond(game):
 
     # \ diagonal winning
     diags = []
-    for ix in range(len(game)):
-        diags.append(game[ix][ix])
+    for ix in range(len(game_board)):
+        diags.append(game_board[ix][ix])
 
     if all_same(diags):
         print(f"\nPlayer {diags[0]} wins diagonally \\ \n")
@@ -113,6 +113,16 @@ def main():
     win_condition = False
     while not win_condition:
         bord_performer(playing_bord, users_input(player_cycle, playing_bord))
+        win_condition = win_cond(playing_bord)
+    if win_condition:
+        again = input("Hey! Your programmer skills have groved up!\n\nWant to improve it even more? (y/n) ")
+        if again.lower() == "y":
+            print("Nice to see you again!")
+            main()
+        elif again.lower() == "n":
+            print("Bye, than...")
+        else:
+            print("Unapropriate input, but nevertheless... bye!")
 
 
 if __name__ == "__main__":
