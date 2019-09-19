@@ -47,9 +47,9 @@ def bord_performer(game_board, users_turn):
 
 def user_input_validator(game_board, user_col, user_row):
     if user_col > len(game_board)-1 or user_row > len(game_board)-1:  # TODO out of range didn't work
-        print("\nThis spot is not exists, give another coordinates!")
+        print("Hey!\nYou probably forgot, in programming a counter starts from zero!\nTry again!")
         return False
-    if game_board[user_col][user_row] != 0:  # if a spot isn't empty
+    if game_board[user_row][user_col] != 0:  # if a spot isn't empty
         print("\nThis spot is occupied, try another!")
         return False
 
