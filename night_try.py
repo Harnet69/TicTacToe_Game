@@ -21,6 +21,7 @@ def board_display(game_board, initial_bord=False):
         print(column, row)
 
 
+# processing of user inputs
 def users_input(player_cycle, playing_bord):
     current_player = next(player_cycle)
     print(f"\nPlayer: {current_player}")
@@ -37,6 +38,7 @@ def users_input(player_cycle, playing_bord):
     return users_turn
 
 
+# display a battlefield after users move
 def bord_performer(game_board, users_turn):
     current_player = users_turn[0]
     user_col = users_turn[1]
@@ -45,6 +47,7 @@ def bord_performer(game_board, users_turn):
     board_display(game_board)
 
 
+# user inputs validator
 def user_input_validator(game_board, user_col, user_row):
     if user_col > len(game_board)-1 or user_row > len(game_board)-1:  # TODO out of range didn't work
         print("Hey!\nYou probably forgot, in programming a counter starts from zero!\nTry again!")
@@ -56,6 +59,21 @@ def user_input_validator(game_board, user_col, user_row):
     return True
 
 
+# winning condition checker (horizontal winning work on wide board)
+def win_cond_performer(game_board):
+    operated_table = []
+    col_iterator = 0
+    row_iterator = 0
+    while col_iterator < len(game_board):
+        while row_iterator <= len(game_board)-3:
+            operated_table.append(game_board[col_iterator][row_iterator:row_iterator+3])
+            row_iterator += 1
+        row_iterator = 0
+        col_iterator += 1
+    if win_cond(operated_table):
+        return True
+
+
 # winnings condition
 def win_cond(game_board):
     def all_same(l):
@@ -64,10 +82,8 @@ def win_cond(game_board):
         else:
             return False
 
-
     # horizontal winning
     for row in game_board:
-        #print(row)    # TODO dead heat
         if all_same(row):
             print(f"\nPlayer {row[0]} is the winner horizontally!\n")
             return True
@@ -81,24 +97,27 @@ def win_cond(game_board):
             print(f"\nPlayer {check[0]} wins vertically |\n")
             return True
 
-    # / diagonal winning
+    # / diagonal winning  TODO Why out of range exception occurs
     diags = []
     for idx, reverse_idx in enumerate(reversed(range(len(game_board)))):
-        diags.append(game_board[idx][reverse_idx])
-
+        try:
+            diags.append(game_board[idx][reverse_idx])
+        except IndexError:
+            pass
     if all_same(diags):
         print(f"\nPlayer {diags[0]} wins diagonally /\n")
         return True
 
-    # \ diagonal winning
+    # \ diagonal winning TODO Why out of range exception occurs
     diags = []
     for ix in range(len(game_board)):
-        diags.append(game_board[ix][ix])
-
+        try:
+            diags.append(game_board[ix][ix])
+        except IndexError:
+                pass
     if all_same(diags):
         print(f"\nPlayer {diags[0]} wins diagonally \\ \n")
         return True
-
 
     # dead heat
     for row in game_board:
@@ -107,20 +126,18 @@ def win_cond(game_board):
     print(f"\nPlayer1 and Player2 have a DRAW!\n")
     return True
 
-    #return False
 
-
+# point of entry
 def main():
-    playing_bord = board_generator(3)
+    playing_bord = board_generator(5)
     board_display(playing_bord)
     player_cycle = itertools.cycle([1, 2])  # iterator for players witch repeats indefinitely
-    #print(board_display(board_generator(3)))
     win_condition = False
     while not win_condition:
         bord_performer(playing_bord, users_input(player_cycle, playing_bord))
-        win_condition = win_cond(playing_bord)
+        win_condition = win_cond_performer(playing_bord)
     if win_condition:
-        again = input("Hey! Your programmer skills have groved up!\n\nWant to improve it even more? (y/n) ")
+        again = input("Hey! Your programmer skills have grown up!\n\nWant to improve it even more? (y/n) ")
         if again.lower() == "y":
             print("Nice to see you again!")
             main()
