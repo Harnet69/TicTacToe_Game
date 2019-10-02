@@ -1,5 +1,5 @@
 import itertools
-
+import colorama
 
 def user_input_bord_size():
     print('\033[H\033[J')

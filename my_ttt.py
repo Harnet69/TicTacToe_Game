@@ -1,110 +1,153 @@
 import itertools
 
 
+# generate a sclable battlefild
+def board_generator(game_size=3):
+    game_board = []
+    for i in range(game_size):  # takes a fields size as argument and return battlefield as list of lists 
+        row = []
+        for i in range(game_size):
+            row.append(0)
+        game_board.append(row)
+    return game_board
+
+
+# display a battlefild
+def board_display(game_board, initial_bord=False):
+    print('\033[H\033[J')
+    print("WELCOME TO TicTacToe GAME FOR NOOBS IN PROGRAMMING!\n")
+    print("   "+"  ".join([str(i) for i in range(len(game_board))]))
+    for column, row in enumerate(game_board):  # display a battlefield in realtime 
+        print(column, row)
+
+
+# processing of user inputs
+def users_input(player_cycle, playing_bord):
+    current_player = next(player_cycle)
+    print(f"\nPlayer: {current_player}")
+    convertable = False
+    while not convertable:
+        try:
+            user_col = int(input("Choose the column: "))
+            user_row = int(input("Choose the row: "))
+            if user_input_validator(playing_bord, user_col, user_row):
+                convertable = True
+        except ValueError:
+            print("It's not a number")
+    users_turn = [current_player, user_row, user_col]
+    return users_turn
+
+
+# display a battlefield after users move
+def bord_performer(game_board, users_turn):
+    current_player = users_turn[0]
+    user_col = users_turn[1]
+    user_row = users_turn[2]
+    game_board[user_col][user_row] = current_player
+    board_display(game_board)
+
+
+# user inputs validator
+def user_input_validator(game_board, user_col, user_row):
+    if user_col > len(game_board)-1 or user_row > len(game_board)-1:  # TODO out of range didn't work
+        print("Hey!\nYou probably forgot, in programming a counter starts from zero!\nTry again!")
+        return False
+    if game_board[user_row][user_col] != 0:  # if a spot isn't empty
+        print("\nThis spot is occupied, try another!")
+        return False
+
+    return True
+
+
+def part_preformer(board, col):
+    operated_table = []
+    for column in range(col, col+3):
+        operated_table.append(board[column][0:3])
+    if win_cond(operated_table):
+        return True
+
+
+# winning condition checker (horizontal winning work on wide board)
+def win_cond_performer(game_board):
+    for i in range(len(game_board)-2):
+        if part_preformer(game_board, i):
+            return True
+        part_preformer(game_board, i)
+
+
 # winnings condition
-def win_cond(current_game):
+def win_cond(game_board):
+    # print('win_cond: ', game_board)
     def all_same(l):
         if l.count(l[0]) == len(l) and l[0] != 0:
             return True
         else:
             return False
 
-    # horizontal
-    for row in game:
-        print(row)
+    # horizontal winning DONE
+    for row in game_board:
         if all_same(row):
-            print(f"Player {row[0]} is the winner horizontally!")
+            print(f"\nPlayer {row[0]} is the winner horizontally!\n")
             return True
 
-    # vertical
-    for col in range(len(game[0])):
+    # vertical winning
+    for col in range(len(game_board[0])):
         check = []
-        for row in game:
+        for row in game_board:
             check.append(row[col])
         if all_same(check):
-            print(f"Player {check[0]} is the winner vertically!")
+            print(f"\nPlayer {check[0]} wins vertically |\n")
             return True
 
-    # / diagonal
+    # / diagonal winning  TODO Why out of range exception occurs
     diags = []
-    for idx, reverse_idx in enumerate(reversed(range(len(game)))):
-        diags.append(game[idx][reverse_idx])
-
+    for idx, reverse_idx in enumerate(reversed(range(len(game_board)))):
+        try:
+            diags.append(game_board[idx][reverse_idx])
+        except IndexError:
+            pass
     if all_same(diags):
-        print(f"Player {diags[0]} has won Diagonally (/)")
+        print(f"\nPlayer {diags[0]} wins diagonally /\n")
         return True
 
-    # \ diagonal
+    # \ diagonal winning TODO Why out of range exception occurs
     diags = []
-    for ix in range(len(game)):
-        diags.append(game[ix][ix])
-
+    for ix in range(len(game_board)):
+        try:
+            diags.append(game_board[ix][ix])
+        except IndexError:
+                pass
     if all_same(diags):
-        print(f"Player {diags[0]} has won Diagonally (\\)")
+        print(f"\nPlayer {diags[0]} wins diagonally \\ \n")
         return True
 
-    return False
-
-
-def game_board(game_map, player=0, row=0, column=0, just_display=False):
-    try:
-        if game_map[row][column] != 0:
-            print("This space is occupied, try another!")
+    # dead heat
+    for row in game_board:
+        if 0 in row:
             return False
-
-        print("   "+"  ".join([str(i) for i in range(len(game_map))]))
-        if not just_display:
-            game_map[row][column] = player
-        for count, row in enumerate(game_map):
-            print(count, row)
-        return game_map
-    except IndexError:
-        print("Hey!\nYou probably forgot, in programming a counter starts from zero!\nTry again!")
-        return False
-    except Exception as e:
-        print(str(e))
-        return False
-    
+    print(f"\nPlayer1 and Player2 have a DRAW!\n")
+    return True
 
 
-# scallable table NOT implemented, yet
-def scallable_tables_generator(game_size=3):
-    game = []
-    for i in range(game_size):
-        row = []
-        for i in range(game_size):
-            row.append(0)
-        game.append(row)
+# point of entry
+def main():
+    playing_bord = board_generator(5)
+    board_display(playing_bord)
+    player_cycle = itertools.cycle([1, 2])  # iterator for players witch repeats indefinitely
+    win_condition = False
+    while not win_condition:
+        bord_performer(playing_bord, users_input(player_cycle, playing_bord))
+        win_condition = win_cond_performer(playing_bord)
+    if win_condition:
+        again = input("Hey! Your programmer skills have grown up!\n\nWant to improve it even more? (y/n) ")
+        if again.lower() == "y":
+            print("Nice to see you again!")
+            main()
+        elif again.lower() == "n":
+            print("Bye, than...")
+        else:
+            print("Unapropriate input, but nevertheless... bye!")
 
-    return game
 
-
-play = True
-players = [1, 2]
-while play:
-    print('\033[H\033[J')
-    print("WELCOME TO TicTacToe GAME FOR NOOBS IN PROGRAMMING!\n")
-    game = scallable_tables_generator()
-    game_won = False
-    player_cycle = itertools.cycle([1, 2])
-    game_board(game, just_display=True)
-    while not game_won:
-        current_player = next(player_cycle)
-        played = False
-        while not played:
-            print(f"\nPlayer: {current_player}")
-            column_choice = int(input("Choose the column: "))
-            row_choice = int(input("Choose the row: "))
-            played = game_board(game, player=current_player, row=row_choice, column=column_choice)
-        print('\033[H\033[J')  # reset a terminal after each turn
-        if win_cond(game):
-            game_won = True
-            again = input("Hey! Your your programmer skills have groved up!\n\nWant to improve it even more? (y/n) ")
-            if again.lower() == "y":
-                print("Nice to see you again!")
-            elif again.lower() == "n":
-                print("Bye, than...")
-                play = False
-            else:
-                print("Unapropriate input, but nevertheless... bye!")
-                play = False
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,31 @@
+Tic Tac Toe game
+
+Battle Field 3x3:
+	. . .
+	. . .
+	. . .
+
+Players:
+	- player 1
+	- player 2
+
+Algorithm of performance:
+1. ask players for introduce  
+  - create an empty table
+
+
+2. ask player 1 for a first turn
+  - receive coordinates: 
+    - record changes 
+    - display the result of player1 turn
+    - check if player1 wins or draw happens   
+
+3. ask player 2 for a first turn
+  - receive coordinates: 
+    - record changes 
+    - display the result of player1 turn
+    - check if player2 wins or draw happens
+
+  preform operation 2,3 while one of players wins or dead heat(draw) happens. Defenition of done is???
+
+4. Give congratulations to winner or inform obout a draw and finish the game 
