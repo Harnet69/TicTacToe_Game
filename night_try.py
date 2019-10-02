@@ -12,7 +12,7 @@ def user_input_bord_size():
                 print("The number can't be less than 3!")
                 continue
             if map_size > 10:
-                print("Hey! Where is yor cordiality??? We don't want to sit here all the day!!!")
+                print("Hey! Where is yor cordiality???\nWe don't want to sit here all the day!!!\nChoose number less than 11! ")
                 continue
             convertable = True
         except ValueError:
