@@ -61,8 +61,11 @@ def user_input_validator(game_board, user_col, user_row):
 
 def part_preformer(board, col):
     operated_table = []
-    for column in range(col, col+3):
-        operated_table.append(board[column][0:3])
+    i = 0
+    while i < 2:  # TODO Works only with number 2 
+        for column in range(col, col+3):
+            operated_table.append(board[column][i:i+3])
+        i += 1
     if win_cond(operated_table):
         return True
 
@@ -131,7 +134,7 @@ def win_cond(game_board):
 
 # point of entry
 def main():
-    playing_bord = board_generator(10)
+    playing_bord = board_generator(5)
     board_display(playing_bord)
     player_cycle = itertools.cycle([1, 2])  # iterator for players witch repeats indefinitely
     win_condition = False
