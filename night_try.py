@@ -1,6 +1,22 @@
 import itertools
 
 
+def user_input_bord_size():
+    print('\033[H\033[J')
+    print("WELCOME TO TicTacToe GAME FOR NOOBS IN PROGRAMMING!\n")
+    convertable = False
+    while not convertable:
+        try:
+            map_size = int(input("What size of board do you want?\n "))
+            if map_size < 3:
+                print("The number can't be less than 3!")
+                continue
+            convertable = True
+        except ValueError:
+            print("It's not a number")
+    return map_size
+
+
 # generate a sclable battlefild
 def board_generator(game_size=3):
     game_board = []
@@ -135,7 +151,7 @@ def win_cond(game_board):
 
 # point of entry
 def main():
-    playing_bord = board_generator(10)
+    playing_bord = board_generator(user_input_bord_size())
     board_display(playing_bord)
     player_cycle = itertools.cycle([1, 2])  # iterator for players witch repeats indefinitely
     win_condition = False
