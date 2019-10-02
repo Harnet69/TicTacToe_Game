@@ -16,4 +16,4 @@ Tic Tac Toe games specification (backlog):
     9.  Add different colors for  spots, occupied by players for better visibility.
     10. Add game effects (sound and visuals).
     11. To expand all kinds of wins condition functionality from paragraph 6 to scalable board DONE
-    12. Add single players game mode with two difficulty levels(random and artificial intelligence).
+    12. Add single player games mode with two difficulty levels(random and artificial intelligence).
