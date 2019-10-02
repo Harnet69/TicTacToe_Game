@@ -12,8 +12,8 @@ Tic Tac Toe games specification (backlog):
        6.4. Another diagonal. DONE
        6.5. Draw. DONE
     7.  After-winning invitation to continue/quite game with user (Yes/No) answers validation. DONE
-    8. Add users a possibility to change the default Player1/Player2 name before games start. 
+    8. Add users a possibility to change the default Player1/Player2 name before games start. DONE
     9. Add different colors for  spots, occupied by players for better visibility.
     10.  Add game effects (sound and visuals).
-    11.  To expand all kinds of wins condition functionality from paragraph 6 to scalable board
+    11.  To expand all kinds of wins condition functionality from paragraph 6 to scalable board DONE
     12.  Add single players game mode with two difficulty levels(random and artificial intelligence).
