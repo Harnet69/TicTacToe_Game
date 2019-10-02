@@ -11,10 +11,23 @@ def user_input_bord_size():
             if map_size < 3:
                 print("The number can't be less than 3!")
                 continue
+            if map_size > 10:
+                print("Hey! Where is yor cordiality??? We don't want to sit here all the day!!!")
+                continue
             convertable = True
         except ValueError:
             print("It's not a number")
     return map_size
+
+
+# users name display
+def username(current_player):
+    if int(current_player) == 1:
+        print(f"\nPlayer: {player1_name}")
+        return player1_name
+    if int(current_player) == 2:
+        print(f"\nPlayer: {player2_name}")
+        return player2_name
 
 
 # generate a sclable battlefild
@@ -40,7 +53,7 @@ def board_display(game_board, initial_bord=False):
 # processing of user inputs
 def users_input(player_cycle, playing_bord):
     current_player = next(player_cycle)
-    print(f"\nPlayer: {current_player}")
+    username(current_player)
     convertable = False
     while not convertable:
         try:
@@ -65,7 +78,7 @@ def bord_performer(game_board, users_turn):
 
 # user inputs validator
 def user_input_validator(game_board, user_col, user_row):
-    if user_col > len(game_board)-1 or user_row > len(game_board)-1:  # TODO out of range didn't work
+    if user_col > len(game_board)-1 or user_row > len(game_board)-1:
         print("Hey!\nYou probably forgot, in programming a counter starts from zero!\nTry again!")
         return False
     if game_board[user_row][user_col] != 0:  # if a spot isn't empty
@@ -78,7 +91,7 @@ def user_input_validator(game_board, user_col, user_row):
 def part_preformer(board, col):
     operated_table = []
     i = 0
-    while i < len(board)-2:  # TODO Works only with number 2 
+    while i < len(board)-2:
         for column in range(col, col+3):
             operated_table.append(board[column][i:i+3])
         i += 1
@@ -97,7 +110,6 @@ def win_cond_performer(game_board):
 
 # winnings condition
 def win_cond(game_board):
-    # print('win_cond: ', game_board)
     def all_same(l):
         if l.count(l[0]) == len(l) and l[0] != 0:
             return True
@@ -107,7 +119,7 @@ def win_cond(game_board):
     # horizontal winning DONE
     for row in game_board:
         if all_same(row):
-            print(f"\nPlayer {row[0]} is the winner horizontally!\n")
+            print(f"\nPlayer {username(row[0])} is the winner horizontally!\n")
             return True
 
     # vertical winning
@@ -116,7 +128,7 @@ def win_cond(game_board):
         for row in game_board:
             check.append(row[col])
         if all_same(check):
-            print(f"\nPlayer {check[0]} wins vertically |\n")
+            print(f"\nPlayer {username(check[0])} wins vertically |\n")
             return True
 
     # / diagonal winning  TODO Why out of range exception occurs
@@ -127,7 +139,7 @@ def win_cond(game_board):
         except IndexError:
             pass
     if all_same(diags):
-        print(f"\nPlayer {diags[0]} wins diagonally /\n")
+        print(f"\nPlayer {username(diags[0])} wins diagonally /\n")
         return True
 
     # \ diagonal winning TODO Why out of range exception occurs
@@ -138,20 +150,24 @@ def win_cond(game_board):
         except IndexError:
                 pass
     if all_same(diags):
-        print(f"\nPlayer {diags[0]} wins diagonally \\ \n")
+        print(f"\nPlayer {username(diags[0])} wins diagonally \\ \n")
         return True
 
     # dead heat
     for row in game_board:
         if 0 in row:
             return False
-    print(f"\nPlayer1 and Player2 have a DRAW!\n")
+    print(f"\n{player1_name} and {player2_name} have a DRAW!\n")
     return True
 
 
 # point of entry
 def main():
     playing_bord = board_generator(user_input_bord_size())
+    global player1_name
+    global player2_name
+    player1_name = input("Player 1! What os your name?\n")
+    player2_name = input("Player 2! What os your name?\n")
     board_display(playing_bord)
     player_cycle = itertools.cycle([1, 2])  # iterator for players witch repeats indefinitely
     win_condition = False
