@@ -1,6 +1,6 @@
 Tic Tac Toe games specification (backlog):
 
-    1.  Consider about games functionality, which will be suitable for present teams level. DONE
+    1.  Consider about games functionality, which will be suitable for the present teams level. DONE
     2.  Create a scheme of base functions of games architecture.  DONE
     3.  Add a scalable boards generator, which allows to create a board with dedicated size. DONE
     4.  Add users input with validations: “isdigit” for columns and rows, “out of board range”, is the spot empty. DONE
