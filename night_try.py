@@ -59,30 +59,32 @@ def user_input_validator(game_board, user_col, user_row):
     return True
 
 
-# winning condition checker (horizontal winning work on wide board)
-def win_cond_performer(game_board):
+def part_preformer(board, col):
     operated_table = []
-    col_iterator = 0
-    row_iterator = 0
-    while col_iterator < len(game_board):
-        while row_iterator <= len(game_board)-3:
-            operated_table.append(game_board[col_iterator][row_iterator:row_iterator+3])
-            row_iterator += 1
-        row_iterator = 0
-        col_iterator += 1
+    for column in range(col, col+3):
+        operated_table.append(board[column][0:3])
     if win_cond(operated_table):
         return True
 
 
+# winning condition checker (horizontal winning work on wide board)
+def win_cond_performer(game_board):
+    for i in range(len(game_board)-2):
+        if part_preformer(game_board, i):
+            return True
+        part_preformer(game_board, i)
+
+
 # winnings condition
 def win_cond(game_board):
+    # print('win_cond: ', game_board)
     def all_same(l):
         if l.count(l[0]) == len(l) and l[0] != 0:
             return True
         else:
             return False
 
-    # horizontal winning
+    # horizontal winning DONE
     for row in game_board:
         if all_same(row):
             print(f"\nPlayer {row[0]} is the winner horizontally!\n")
@@ -129,7 +131,7 @@ def win_cond(game_board):
 
 # point of entry
 def main():
-    playing_bord = board_generator(5)
+    playing_bord = board_generator(10)
     board_display(playing_bord)
     player_cycle = itertools.cycle([1, 2])  # iterator for players witch repeats indefinitely
     win_condition = False
